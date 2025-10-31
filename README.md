@@ -32,3 +32,4 @@ then run `py src/app.py`
 - Siddharth Kakumanu
 - Nikhil Verma
 - Aanya Kotla
+- Ansh Kapadia
