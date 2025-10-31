@@ -29,3 +29,4 @@ if not active, run `.venv\Scripts\activate.ps1 `
 
 then run `py src/app.py`
 
+- Siddharth Kakumanu
