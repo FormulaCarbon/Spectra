@@ -1,13 +1,18 @@
-<html>
-    <head>
-        {{ codemirror.include_codemirror() }}
-    </head>
-    <body>
-        editor
-        <div>
-            <form method="POST">
-                {{ form.source_code }}
-            </form>
-        </div>
-    </body>
-</html>
+{% extends "layout.html" %}
+{% block title %}Editor{% endblock %}
+
+{% block head %}
+  {{ super() }}
+  {{ codemirror.include_codemirror() }}
+{% endblock %}
+
+{% block content %}
+
+<div>
+    <form method="POST">
+        {{ form.source_code }}
+    </form>
+</div>
+
+
+{% endblock %}
