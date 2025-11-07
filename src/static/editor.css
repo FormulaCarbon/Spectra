@@ -1,0 +1,63 @@
+div.col {
+    outline: 2px solid green
+}
+
+div.row {
+    outline: 2px solid red
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.fill {
+  min-height: 100vh;
+  height: 100%;
+}
+
+/* Keep main row as side-by-side flex layout */
+.container.fill > .row.fill {
+  display: flex;
+  height: 100%;
+}
+
+/* Make the left column a vertical flex container */
+.container.fill > .row.fill > .col:first-child {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Let the bottom row in the left column fill the rest of the height */
+.container.fill > .row.fill > .col:first-child > .row:last-child {
+  flex-grow: 1;
+  background-color: rgba(255, 0, 0, 0.05); /* test visual */
+}
+
+/* Right column (with CodeMirror) stays normal */
+.container.fill > .row.fill > .col:last-child {
+  display: block;
+}
+
+/* Make the right column a vertical flex container */
+.container.fill > .row.fill > .col:last-child {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Stretch the form and CodeMirror editor */
+.container.fill > .row.fill > .col:last-child form {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Make the CodeMirror box fill all remaining space */
+.container.fill > .row.fill > .col:last-child .CodeMirror {
+  flex-grow: 1;
+  height: 100%;
+}
+
+div#content {
+    outline: 2px solid blue;
+}

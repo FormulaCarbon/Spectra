@@ -2,17 +2,33 @@
 {% block title %}Editor{% endblock %}
 
 {% block head %}
-  {{ super() }}
-  {{ codemirror.include_codemirror() }}
+    {{ super() }}
+    {{ codemirror.include_codemirror() }}
+    <link href="../static/editor.css" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
 
-<div>
-    <form method="POST">
-        {{ form.source_code }}
-    </form>
+<div class="container fill">
+    <div class = "row fill">
+        <div class="col">
+            <div class="row">
+                1 of 2
+            </div>
+            <div class="row">
+                2 of 2
+            </div>
+        </div>
+        <div class = "col">
+            <form method="POST">
+                {{ form.source_code }}
+            </form>
+        </div>
+    </div>
 </div>
 
 
+{% endblock %}
+
+{% block footer %}
 {% endblock %}
