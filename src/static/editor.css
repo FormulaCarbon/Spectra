@@ -61,3 +61,18 @@ html, body {
 div#content {
     outline: 2px solid blue;
 }
+
+#mic-button {
+  background-color: #238636;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  margin: 0.4rem 0rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+button:hover { background-color: #2ea043; }
+button:disabled { opacity: 0.6; cursor: not-allowed; }
