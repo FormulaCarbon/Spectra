@@ -1,4 +1,4 @@
-# Spectral - A Conversational Coding Assistant
+# Spectrum - A Conversational Coding Assistant
 
 ## 1. Problem:
 Coding still relies heavily on memorizing syntax and precise typing — barriers that make programming intimidating for beginners and inaccessible for users with disabilities. In a world where technology is increasingly voice-driven, programming should evolve to be just as conversational and intuitive.
