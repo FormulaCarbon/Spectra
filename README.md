@@ -64,7 +64,9 @@ Spectra can be offered as a freemium web app or browser-based learning companion
   - Strict hint throttling and no solutions until the end
   - Exportable session logs to share with teachers/tutors
 
----
+**Education Tier ($50/month):** 
+- Supports an educational environment allowing administrators to add up to 30 student accounts
+- Teachers can assess growth, track student's time commitment, and assign specific practices
 
 ## Team Members
 - **Siddharth Kakumanu** - GitHub: @FormulaCarbon  
