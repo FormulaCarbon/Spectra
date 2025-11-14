@@ -13,8 +13,9 @@ NLP Models: Options include spaCy, Ollama, OpenAI API, or a fine-tuned lightweig
 
 ## 3. Monetize:
 Spectra can be offered as a freemium educational platform or browser extension:
-Free Tier: Access to a locally hosted distilled model (via Ollama) for basic code generation and syntax explanations
-Premium Tier ($10/month): Unlocks cloud-based APIs (e.g., OpenAI) for enhanced accuracy, multi-language support (Python, C++, Java, JavaScript), and “Explain Mode,” which teaches coding logic behind each output.
+Free Tier: Access to a locally hosted distilled model (via Ollama) for basic code generation and syntax explanations in pyton
+Premium Tier ($15/month): Unlocks cloud-based APIs (e.g., OpenAI) for enhanced accuracy, multi-language support (Python, C++, Java, JavaScript), and “Explain Mode,” which teaches coding logic behind each output.
+Education Tier ($50/month): Supports an educational environemnt allowing administrators to add up to 30 student accounts to assess growth, track student's time commitment, and assign specific practices. 
 
 ## Team Members
 - **Siddharth Kakumanu** - GitHub: @FormulaCarbon
