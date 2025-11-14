@@ -1,92 +1,140 @@
-# Spectra - A Socratic Problem-Solving Tutor
+Spectra – A Socratic STEM Classroom Platform
+1. Problem
 
-## 1. Problem:
-Most AI tools give students *answers* too quickly. That makes homework look easier in the moment but quietly destroys problem-solving skills and confidence, especially in STEM subjects like **math, computer science, and physics**. Students learn to copy solutions instead of learning how to think: breaking down problems, checking assumptions, manipulating equations, and debugging code.
+AI tools now give students answers instantly, which makes assignments seem easier while quietly weakening real learning—especially in math, computer science, and physics. Teachers have no visibility into how students use AI, what steps they attempted, or where they get stuck. Existing classroom platforms (Google Classroom, Khan Academy, etc.) do not integrate AI in a way that reinforces learning through inquiry instead of answer-giving.
 
-We need a tool that refuses to be a shortcut and instead *trains* the student’s thinking — in the exact environments where that thinking happens:  
-- a **math workspace** with LaTeX for real equations, and  
-- a **coding workspace** that feels like a lightweight IDE.
+Spectra solves this by offering a Socratic AI tutor that guides with questions, not solutions, while giving teachers visibility into student reasoning.
 
----
+2. Solution Overview
 
-## 2. How (Technology):
-Spectra is built from the ground up to act like a strict Socratic tutor: it guides with questions and hints, not full solutions (unless the student is truly stuck), with special support for **math, CS, and physics** workflows.
+Spectra is a lightweight, classroom-oriented web app designed for STEM learning. It combines:
 
-**Frontend:**  
-- HTML, CSS, JavaScript  
-- Simple “problem workspace” focused on STEM:
-  - Left side: **Problem & Work Area**
-    - Rich text input with **inline LaTeX** (`\( ... \)` / `$$ ... $$`) for math and physics.
-    - A **built-in code editor** (lightweight IDE) for CS problems using Monaco or CodeMirror:
-      - Syntax highlighting (Python, C++, Java, JavaScript)
-      - Line numbers, indentation, basic error highlighting
-  - Right side: **Tutor Dialogue**
-    - Chat-style dialogue showing the tutor’s questions and the student’s answers
-    - Clearly marked steps like *“Understand → Plan → Execute → Check”*  
-- Math & Code UX:
-  - LaTeX is auto-rendered via MathJax/KaTeX so equations look like a real math notebook.
-  - Code editor supports copy/paste of student attempts and quick “Run/Check” for supported languages (e.g., Python, JS) via backend runners or sandboxed execution.
-- Progress indicators:
-  - Stage tracker: *Understand problem → Plan → Execute → Check*
-  - Gentle badges like:
-    - “You identified all givens”
-    - “You set up the correct formula”
-    - “You tested an edge case”
-    - “You debugged your own code without a direct answer”
+• A teacher dashboard for assignments and student monitoring
+• A LaTeX math editor and simple in-browser coding area
+• A Socratic AI assistant that refuses to give answers directly
+• Basic user accounts with login, roles, and session tracking
+• A minimal database suitable for fast prototyping
 
-**Backend:**  
-- Lightweight Flask server that:
-  - Stores minimal session state:
-    - Current problem
-    - Subject type (math, CS, physics)
-    - Current step and student answers so far
-  - Enforces a **Socratic policy**:
-    - The model must ask questions first, not give solutions.
-    - It can reference student LaTeX or code and respond with targeted questions:
-      - For math/physics: ask about units, givens, formulas, algebra steps.
-      - For CS: ask about loop bounds, conditions, data structures, test cases.
-  - Solution reveal logic:
-    - Only reveals full or partial solutions after multiple failed attempts or explicit user request (“I’m stuck. Show me.”)
-    - For math/physics: may show a *setup* first (equation, free-body diagram description) before the final numeric answer.
-    - For CS: may show a *fixed algorithm outline* before giving a full code snippet.
+Everything is designed to fit within a 2-week development window.
 
-**NLP / LLM logic (pluggable):**  
-- Uses an LLM with a strict system prompt plus metadata (subject type, current step) to:
-  - Classify the student’s current step:
-    - Understanding the problem
-    - Planning a strategy/formula/algorithm
-    - Executing computation or writing code
-    - Checking and interpreting the result
-  - Generate **targeted questions** instead of answers:
-    - Math/Physics examples:
-      - “What are the knowns and unknowns?”
-      - “Which conservation law or formula might apply here?”
-      - “Can you isolate \( x \) in this equation?”
-    - CS examples:
-      - “What input does your function expect and what should it return?”
-      - “What happens when the list is empty?”
-      - “Can you trace your loop for the first 3 iterations?”
-  - Decide when to escalate from:
-    - “Hint” → “Outline of solution” → “Full solution”
-- Model options:
-  - Local models via **Ollama** for low-cost experimentation and offline use.
-  - Cloud APIs such as **OpenAI** for higher-quality and multi-domain reasoning across math, CS, and physics.
-  - Optional lightweight text/code processing (regex, static checks) to detect:
-    - When the student is just pasting the model’s previous output.
-    - Common math mistakes (sign errors, unit mistakes).
-    - Common CS bugs (off-by-one, wrong comparison, un-initialized variables).
+3. Key Features (Built for a Demo)
+User Accounts & Login System
 
-**Example flow (Math):**  
-User writes in the math workspace:  
-> “Find the derivative of \( f(x) = x^3 - 3x^2 + 5 \).”  
+• Simple email + password login
+• Three roles: admin, teacher, student
+• Session-based authentication (no OAuth required)
+• Admins create teachers and classrooms; teachers enroll students
 
-Spectra responds *not* with the derivative, but with questions like:  
-- “What rule do we usually use to differentiate powers of \( x \)?”  
-- “Can you differentiate just \( x^3 \) first?”  
-- “What is the derivative of \( -3x^2 \)?”
+Database for demo can use:
+• SQLite (single file, minimal setup) or
+• JSON files for users, classes, assignments, and logs
 
-**Example flow (CS):**  
-User types code in the IDE panel:  
-```python
-for i in range(1, 5):
-    print(i)
+Classrooms & Assignments
+
+• Admins create classroom shells
+• Teachers add students and create small assignments
+• Problems can include math (LaTeX) or code prompts
+
+Student Workspace
+
+• Left side: math text area with LaTeX rendering OR a simple code textbox
+• Right side: Socratic tutor chat
+• AI only asks questions and guides steps (no direct answers unless enabled)
+• Tracks steps like “Understand → Plan → Execute → Check”
+
+Teacher Dashboard
+
+• See student progress on each assignment
+• View key stats: time on task, number of hints used, step completion
+• View a transcript of the student’s interaction with the tutor
+• Identify common misconceptions
+
+Socratic AI Behavior
+
+• AI asks guiding questions based on student input
+• Only provides hints or conceptual guidance, not direct solutions
+• Mode settings allow:
+
+Full socratic (no answers ever)
+
+Hints allowed
+
+Exam mode (strict, no hints)
+
+Anti-Shortcut Signals (Simple)
+
+• Detects if student pastes long blocks of code or LaTeX
+• Flags skipped steps
+• Shows all AI/student messages to teachers
+
+4. Education Plan (Demo-Ready)
+
+Spectra is structured for classrooms, not individual use.
+
+• Education Tier (prototype):
+– Up to 30 student accounts
+– One or more teachers per classroom
+– Assignment creation, progress tracking, and transcript viewing
+
+This plan is fully implemented in the demo version as basic classroom management.
+
+5. Technology Stack
+Backend
+
+• Python + Flask
+• SQLite or JSON files for data (keeps demo simple)
+• Basic password hashing
+• Routes for login, classes, assignments, sessions
+
+Frontend
+
+• HTML, CSS, Bootstrap, and JavaScript
+• MathJax or KaTeX for LaTeX rendering
+• Simple code input box (no full IDE needed for demo)
+• Chat-style UI for Socratic tutor
+
+AI / NLP
+
+• Ollama for local model OR
+• OpenAI API for high-quality reasoning
+• Strict “Socratic mode” system prompt layer
+• Thin wrapper that logs student-AI turns to database
+
+6. Setup Instructions (Simple)
+
+Create a virtual environment
+py -m venv .venv
+
+Install dependencies
+pip install -r requirements.txt
+
+Start Flask
+py src/app.py
+
+Navigate to the provided local URL to access:
+• Login page
+• Teacher dashboard
+• Student workspace
+
+7. Project Structure
+
+src
+– app.py
+– templates (HTML pages)
+– static (CSS, JS)
+– data (SQLite DB or JSON files)
+– utils (auth, database helpers)
+
+(Exact structure can be adjusted easily during development.)
+
+8. Team Members
+
+• Siddharth Kakumanu – @FormulaCarbon
+• Ansh Kapadia – @AnshVKapadia
+• Aanya Kotla – @aak-222735
+• Nikhil Verma – @socials-nick
+• Sriprajnav Koduri – @pkoduri14
+
+9. License
+
+GNU GPLv3
