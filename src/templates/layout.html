@@ -10,6 +10,28 @@
             <link rel="stylesheet" href="">
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+            <style>
+                html, body {
+                    height: 100%;
+                    margin: 0;
+                }
+
+                #content {
+                    flex: 1;
+                }
+
+                body {
+                    display: flex;
+                    flex-direction: column;
+                }
+
+                footer {
+                    background-color: #f1f1f1;
+                    text-align: center;
+                    padding: 10px;
+                    width: 100%;
+                }
+            </style>
         {% endblock %}
     </head>
     <body class="text-bg-dark">
@@ -34,7 +56,9 @@
         <div id="content" class = "fill">{% block content %}{% endblock %}</div>
         <div id="footer">
             {% block footer %}
-                footer
+                <footer class="bg-light text-dark">
+                    <p>Made with love by the Spectra team.</p>
+                </footer>
             {% endblock %}
         </div>
     </body>
