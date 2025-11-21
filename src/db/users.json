@@ -1,1 +1,10 @@
-{"test1": {"password": "test1"}}
+{
+    "test1": {
+        "password": "test1",
+        "classrooms": [
+            "testclass1",
+            "testclass1",
+            "testclass1"
+        ]
+    }
+}

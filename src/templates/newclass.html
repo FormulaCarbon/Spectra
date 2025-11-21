@@ -1,0 +1,60 @@
+{% extends "layout.html" %} 
+
+{% block title %}Login{% endblock %} 
+
+{% block head %} 
+    {{ super() }} 
+{% endblock %} 
+
+{% block navbar %} 
+    {{ super() }} 
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <form method="POST" action="/newclass">
+        <h1> New Classroom </h1>
+        <div class="mb-3">
+            <input
+                type="text"
+                class="form-control"
+                id="classname"
+                placeholder="Class Name"
+                name="classname"
+            />
+        </div>
+        <div class="mb-3">
+            <input
+                type="text"
+                class="form-control"
+                id="students"
+                placeholder="Students"
+                name="students"
+            />
+        </div>
+        <div class="mb-3">
+            <input
+                type="text"
+                class="form-control"
+                id="teachers"
+                placeholder="Teachers"
+                name="teachers"
+            />
+        </div>
+        <div class="mb-3">
+            <input
+                type="text"
+                class="form-control"
+                id="admins"
+                placeholder="Admins"
+                name="admins"
+            />
+        </div>
+        <button type="submit" class="btn btn-primary">Create</button>
+    </form>
+</div>
+{% endblock %} 
+
+{% block footer %} 
+    {{ super() }} 
+{% endblock %}
