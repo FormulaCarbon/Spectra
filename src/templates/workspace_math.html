@@ -4,22 +4,22 @@
 {% block content %}
 
 <style>
-    /* Question box */
+    /* Question box styling */
     .question-box {
         margin-bottom: 20px;
         padding: 15px;
-        background: #2c2f33; /* Discord-like dark card */
+        background: #2c2f33;
         border-left: 4px solid #3b82f6;
         border-radius: 6px;
         color: #e4e4e4;
     }
 
-    /* General text color inside workspace */
+    /* Title, text */
     h3, p, strong {
         color: #f0f0f0 !important;
     }
 
-    /* Math label */
+    /* Math Answer Label */
     .math-label {
         font-weight: 600;
         font-size: 1.2rem;
@@ -35,7 +35,7 @@
         font-size: 24px;
         border: 2px solid #50545c;
         border-radius: 8px;
-        background: #1e1f22;   /* dark textbox background */
+        background: #1e1f22;
         color: #ffffff;
         cursor: text;
     }
@@ -46,13 +46,19 @@
         box-shadow: 0 0 6px rgba(59, 130, 246, 0.5);
     }
 
-    /* Hidden outputs for MathQuill stability */
+    /* Hidden outputs for stability */
     #latex-output, #latex-preview {
         visibility: hidden;
         height: 0 !important;
         padding: 0 !important;
         margin: 0 !important;
         overflow: hidden;
+    }
+
+    /* Correct/Incorrect message */
+    #result {
+        font-size: 1.2rem;
+        margin-top: 15px;
     }
 </style>
 
@@ -66,6 +72,10 @@
     <h3>{{ assignment.title }}</h3>
     <hr style="border-color: #666;">
 
+    <a href="{{ url_for('tutor_page') }}" class="btn btn-outline-info mt-3">
+        💬 Need Help from SpectraGuide?
+    </a>
+
     <!-- QUESTION BOX -->
     <div class="question-box">
         <p><strong>Problem:</strong> {{ assignment.problem }}</p>
@@ -76,13 +86,18 @@
     </div>
 
     <!-- INPUT FIELD -->
-    <label class="math-label">Math Answer</label>
+    <label class="math-label">Your Answer</label>
     <div id="math-field" class="mq-editable-field"></div>
 
+    <!-- Hidden latex outputs -->
     <div id="latex-output"></div>
     <div id="latex-preview"></div>
 
-    <button class="btn btn-primary mt-3">Submit</button>
+    <!-- BUTTON -->
+    <button id="check-btn" class="btn btn-primary mt-3">Check Answer</button>
+
+    <!-- FEEDBACK BOX -->
+    <div id="result"></div>
 
 </div>
 
@@ -103,8 +118,9 @@
 </script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
-<!-- Initialize MathQuill -->
+<!-- Initialize MathQuill & Answer Checking -->
 <script>
+    // MathQuill setup
     var MQ = MathQuill.getInterface(2);
     var field = MQ.MathField(document.getElementById("math-field"), {
         handlers: {
@@ -115,6 +131,33 @@
                 MathJax.typesetPromise();
             }
         }
+    });
+
+    // Normalize Latex for fair comparison
+    function normalize(latex) {
+        return latex
+            .replace(/\s+/g, "")
+            .replace(/\\left/g, "")
+            .replace(/\\right/g, "")
+            .replace(/\{/g, "")
+            .replace(/\}/g, "");
+    }
+
+    // Check Answer Button
+    document.getElementById("check-btn").addEventListener("click", function() {
+        let userAns = normalize(field.latex());
+        let correctAns = normalize("{{ assignment.answer }}");
+
+        let resultBox = document.getElementById("result");
+
+        if (userAns === correctAns) {
+            resultBox.innerHTML = "<span style='color:#4ade80;'>✔ Correct!</span>";
+        } else {
+            resultBox.innerHTML = "<span style='color:#f87171;'>✘ Incorrect. Try again.</span>";
+        }
+
+        console.log(userAns);
+        console.log(correctAns);
     });
 </script>
 

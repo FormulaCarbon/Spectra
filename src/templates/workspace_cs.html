@@ -44,15 +44,28 @@
 
     <h3>{{ assignment.title }}</h3>
     <hr style="border-color: #666;">
+    
+    <a href="{{ url_for('tutor_page') }}" class="btn btn-outline-info mt-3">
+        💬 Need Help from SpectraGuide?
+    </a>
 
     <div class="question-box">
-        <p><strong>Problem:</strong></p>
-        <p>{{ assignment.problem }}</p>
+        <p><strong>Problem:</strong> {{ assignment.problem }}</p>
     </div>
 
     <textarea id="editor-box"># Write Python code here</textarea>
 
-    <button class="btn btn-primary mt-3">Submit</button>
+    <button class="btn btn-primary mt-3" id="run-btn">Run Code</button>
+
+    <h4 class="mt-4" style="color:#f0f0f0;">Output:</h4>
+    <pre id="output" style="
+        background:#1e1f22;
+        color:#00ff90;
+        padding:15px;
+        border-radius:6px;
+        min-height:120px;
+        white-space:pre-wrap;
+    "></pre>
 
 </div>
 
@@ -66,7 +79,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/python/python.min.js"></script>
 
 <script>
-    CodeMirror.fromTextArea(
+    window.editor = CodeMirror.fromTextArea(
         document.getElementById("editor-box"),
         {
             lineNumbers: true,
@@ -78,5 +91,49 @@
         }
     );
 </script>
+
+<!-- Pyodide -->
+<script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+
+<script>
+    let pyodideReady = false;
+    let pyodide;
+
+    async function loadPyodideAndPackages() {
+        pyodide = await loadPyodide();
+        pyodideReady = true;
+    }
+    loadPyodideAndPackages();
+
+    document.getElementById("run-btn").addEventListener("click", async () => {
+        const outputBox = document.getElementById("output");
+        outputBox.innerText = "Running...";
+
+        if (!pyodideReady) {
+            outputBox.innerText = "Pyodide is still loading...";
+            return;
+        }
+
+        try {
+            const userCode = window.editor.getValue();
+
+            // Capture stdout
+            let stdout = [];
+            pyodide.setStdout({
+                batched: (msg) => stdout.push(msg)
+            });
+
+            // Run the user's Python code
+            await pyodide.runPythonAsync(userCode);
+
+            // Show all printed output
+            outputBox.innerText = stdout.join('\n');
+        } catch (err) {
+            outputBox.innerText = String(err);
+        }
+    });
+
+</script>
+
 
 {% endblock %}

@@ -1,0 +1,126 @@
+{% extends "layout.html" %}
+{% block title %}SpectraGuide — Tutor{% endblock %}
+
+{% block content %}
+
+<style>
+    body {
+        background: #1e1f22 !important;
+    }
+
+    .chat-container {
+        max-width: 900px;
+        margin: auto;
+        padding: 20px;
+    }
+
+    .message {
+        padding: 12px 16px;
+        border-radius: 12px;
+        margin-bottom: 12px;
+        max-width: 75%;
+        white-space: pre-wrap;
+    }
+
+    .user-msg {
+        background: #3b82f6;
+        color: white;
+        margin-left: auto;
+    }
+
+    .bot-msg {
+        background: #2c2f33;
+        border: 1px solid #50545c;
+        color: #f0f0f0;
+        margin-right: auto;
+    }
+
+    #input-area {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+    }
+
+    #user-input {
+        flex: 1;
+        background: #1e1f22;
+        border: 1px solid #50545c;
+        border-radius: 6px;
+        padding: 10px;
+        color: white;
+    }
+
+    #send-btn {
+        white-space: nowrap;
+    }
+</style>
+
+<nav class="navbar navbar-dark bg-dark px-3">
+    <a href="{{ url_for('main') }}" class="navbar-brand">← Back</a>
+    <span class="text-white">SpectraGuide — Socratic Tutor</span>
+</nav>
+
+<div class="chat-container">
+
+    <h3 style="color:#f0f0f0;">SpectraGuide</h3>
+    <p style="color:#c9c9c9;">Ask a question — SpectraGuide will guide your thinking without giving answers.</p>
+    <hr style="border-color:#555;">
+
+    <div id="chat-box"></div>
+
+    <div id="input-area">
+        <input id="user-input" placeholder="Type your question..." />
+        <button id="send-btn" class="btn btn-info">Send</button>
+    </div>
+
+</div>
+
+<script>
+    const chatBox = document.getElementById("chat-box");
+    const input = document.getElementById("user-input");
+    const sendBtn = document.getElementById("send-btn");
+    
+    let history = [];
+
+    function addMessage(text, sender) {
+        const msg = document.createElement("div");
+        msg.classList.add("message");
+
+        if (sender === "user") msg.classList.add("user-msg");
+        else msg.classList.add("bot-msg");
+
+        msg.textContent = text;
+        chatBox.appendChild(msg);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    async function sendToTutor(msg) {
+        const response = await fetch("/tutor_api", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                message: msg,
+                history: history
+            })
+        });
+
+        const data = await response.json();
+        return data.reply;
+    }
+
+    sendBtn.addEventListener("click", async () => {
+        const text = input.value.trim();
+        if (!text) return;
+
+        addMessage(text, "user");
+        history.push({ role: "user", content: text });
+
+        input.value = "";
+
+        const reply = await sendToTutor(text);
+        addMessage(reply, "bot");
+        history.push({ role: "assistant", content: reply });
+    });
+</script>
+
+{% endblock %}
