@@ -12,6 +12,8 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 from google import generativeai as genai
 genai.configure(api_key=GEMINI_API_KEY)
 
+from datetime import datetime, timedelta
+
 SECRET_KEY = os.urandom(32)
 CODEMIRROR_LANGUAGES = ['python', 'html']
 CODEMIRROR_THEME = 'material'
@@ -33,6 +35,13 @@ with open(os.path.join(os.path.dirname(__file__), "./db/classrooms.json"), 'r') 
     classrooms = json.load(f)
 
 
+def add_minutes(username, minutes):
+    user = users.get(username)
+    if user:
+        user['daily_minutes'] = user.get('daily_minutes', 0) + minutes
+        with open(os.path.join(os.path.dirname(__file__), ".\\db\\users.json"), 'w') as f:
+            json.dump(users, f, indent=4)
+
 @app.route('/')
 def main():
     return render_template('index.html', user=session.get('user',''))
@@ -43,7 +52,10 @@ def editor():
     form = Editor()
     if form.validate_on_submit():
         text = form.source_code.data
-    return render_template('editor.html', form=form, user=session.get('user',''))
+        username = session.get('user', '')
+        if username:
+            add_minutes(username, 10)
+    return render_template('editor.html', form=form, user = session.get('user',''))
 
 
 @app.route('/login', methods=['GET','POST'])
@@ -54,6 +66,30 @@ def login():
 
         if validate_login(username, password, users):
             session['user'] = username
+            
+            user = users[username]
+            today = datetime.today().date()
+            last_active_str = user.get('last_active')
+            last_active = datetime.strptime(last_active_str, "%Y-%m-%d").date() if last_active_str else None
+             # Only count streak if student worked >=30 min today
+            if user.get('daily_minutes', 0) >= 30:
+                if last_active == today - timedelta(days=1):
+                    user['streak'] = user.get('streak', 0) + 1
+                elif last_active != today:
+                    user['streak'] = 1  # reset streak if missed a day
+
+                # Update total minutes and days worked
+                user['total_minutes'] = user.get('total_minutes', 0) + user['daily_minutes']
+                user['days_worked'] = user.get('days_worked', 0) + 1
+
+            # Reset daily minutes for today
+            user['daily_minutes'] = 0
+            user['last_active'] = today.strftime("%Y-%m-%d")
+
+            # Save users.json
+            with open(os.path.join(os.path.dirname(__file__), ".\\db\\users.json"), 'w') as f:
+                json.dump(users, f, indent=4)
+
         else:
             flash("invalid username or password", "danger")
 
@@ -185,6 +221,35 @@ def tutor_api():
     except Exception as e:
         print("Gemini error:", e)
         return jsonify({"reply": "There was an error with the AI request."}), 500
+
+@app.route('/streaks')
+def streaks():
+    username = session.get('user', '')
+    user_info = users.get(username, {})
+    user_classes = user_info.get('classrooms', [])
+
+    class_streaks = {}
+    for cname in user_classes:
+        class_users = classrooms.get(cname, {}).get('students', [])
+        streak_data = []
+        for u in class_users:
+            udata = users.get(u, {})
+            streak = udata.get('streak', 0)
+            days = udata.get('days_worked', 1)  # avoid division by zero
+            total_minutes = udata.get('total_minutes', 0)
+            avg_minutes = total_minutes / days if days > 0 else 0
+
+            streak_data.append({
+                'username': u,
+                'streak': streak,
+                'avg_minutes': avg_minutes
+            })
+
+        # Sort: first by streak descending, then by avg_minutes descending
+        streak_data.sort(key=lambda x: (-x['streak'], -x['avg_minutes']))
+        class_streaks[cname] = streak_data
+
+    return render_template('streaks.html', user=username, class_streaks=class_streaks)
 
 
 if __name__ == '__main__':
