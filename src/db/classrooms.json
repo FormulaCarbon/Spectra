@@ -12,6 +12,6 @@
             "test1",
             "test2"
         ],
-        "assignments": []
+        "assignments": [1, 2]
     }
 }

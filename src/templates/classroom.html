@@ -1,54 +1,80 @@
 {% extends "layout.html" %}
-
-{% block title %}{{ classname }}{% endblock %}
-
-{% block head %}
-    {{ super() }}
-{% endblock %}
-
-{% block navbar %}
-    {{ super() }}
-{% endblock %}
+{% block title %}Classroom – {{ classname }}{% endblock %}
 
 {% block content %}
-<h2>Classroom: {{ classname }}</h2>
 
-<h3>Students:</h3>
-{% if classroom.students %}
-    <ul>
-    {% for student in classroom.students %}
-        <li>{{ student }}</li>
+<style>
+    body { background: #1e1f22 !important; }
+
+    h2, h5, p, small {
+        color: #f0f0f0 !important;
+    }
+
+    hr {
+        border-color: #555 !important;
+    }
+
+    .assignment-card {
+        cursor: pointer;
+        transition: 0.15s ease;
+        background: #2c2f33;
+        border-radius: 8px;
+        border: 1px solid #444;
+    }
+
+    .assignment-card:hover {
+        transform: translateY(-2px);
+        background: #3a3d41;
+    }
+
+    .assignment-card .card-body {
+        color: #e4e4e4;
+    }
+
+    .badge.bg-primary {
+        background-color: #3b82f6 !important;
+    }
+
+    .badge.bg-info {
+        background-color: #0ea5e9 !important;
+    }
+
+</style>
+
+<h2>Classroom – {{ classname }}</h2>
+<hr>
+
+<div class="row g-3">
+
+    {% for a in assignments %}
+    <div class="col-md-6">
+        <a href="{{ url_for('assignment_page', aid=a.id) }}"
+           style="text-decoration:none; color:inherit;">
+            <div class="card assignment-card shadow-sm">
+                <div class="card-body">
+                    <h5>{{ a.title }}</h5>
+
+                    <p class="text-muted" style="color:#c9c9c9 !important;">
+                        {{ a.problem }}
+                    </p>
+
+                    {% if a.type == "math" %}
+                        <span class="badge bg-primary">Math</span>
+                    {% else %}
+                        <span class="badge bg-info">Coding</span>
+                    {% endif %}
+
+                    <small class="d-block mt-2 text-muted" style="color:#bfbfbf !important;">
+                        Assignment ID: {{ a.id }}
+                    </small>
+                </div>
+            </div>
+        </a>
+    </div>
     {% endfor %}
-    </ul>
-{% else %}
-    <p>No students enrolled yet.</p>
-{% endif %}
 
-<h3>Teachers:</h3>
-{% if classroom.teachers %}
-    <ul>
-    {% for teacher in classroom.teachers %}
-        <li>{{ teacher }}</li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No teachers assigned yet.</p>
-{% endif %}
+</div>
 
-<h3>Assignments:</h3>
-{% if classroom.assignments %}
-    <ul>
-    {% for a in classroom.assignments %}
-        <li>{{ a }}</li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No assignments yet.</p>
-{% endif %}
+<a href="{{ url_for('profile') }}" class="btn btn-secondary mt-4">Back to Profile</a>
 
-<a href="{{ url_for('profile') }}" class="btn btn-secondary mt-3">Back to Profile</a>
-{% endblock %}
-
-{% block footer %}
-    {{ super() }}
 {% endblock %}

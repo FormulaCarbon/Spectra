@@ -19,6 +19,10 @@ codemirror = CodeMirror(app)
 with open(os.path.join(os.path.dirname(__file__), ".\\db\\users.json"), 'r') as f:
     users = json.load(f)
     f.close()
+
+with open(os.path.join(os.path.dirname(__file__), "db", "assignments.json"), 'r') as f:
+    assignments = json.load(f)
+
     
 with open(os.path.join(os.path.dirname(__file__), "db", "classrooms.json"), 'r') as f:
     classrooms = json.load(f)
@@ -165,11 +169,47 @@ def classroom_page(classname):
     if not classroom_info:
         flash("Classroom not found.", "danger")
         return redirect(url_for('profile'))
+
+    # Build detailed assignment list
     
-    return render_template('classroom.html',
-                           classname=classname,
-                           classroom=classroom_info,
-                           user=session.get('user',''))
+    with open(os.path.join(os.path.dirname(__file__), "db", "assignments.json"), 'r') as f:
+        assignments = json.load(f)
+    assignment_list = []
+    for aid in classroom_info.get("assignments", []):
+        if str(aid) in assignments:
+            assignment_list.append(assignments[str(aid)])
+
+    return render_template(
+        'classroom.html',
+        classname=classname,
+        assignments=assignment_list,
+        user=session.get('user','')
+    )
+
+@app.route('/assignment/<int:aid>')
+def assignment_page(aid):
+    aid_str = str(aid)
+    if aid_str not in assignments:
+        flash("Assignment not found.", "danger")
+        return redirect(url_for('profile'))
+
+    a = assignments[aid_str]
+
+    # Render appropriate workspace
+    if a["type"] == "math":
+        return render_template("workspace_math.html",
+                               assignment=a,
+                               user=session.get('user',''))
+
+    elif a["type"] == "cs":
+        return render_template("workspace_cs.html",
+                               assignment=a,
+                               user=session.get('user',''))
+
+    else:
+        flash("Invalid assignment type.", "danger")
+        return redirect(url_for('profile'))
+
 
 @app.route('/streaks')
 def streaks():
