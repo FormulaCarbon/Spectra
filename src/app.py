@@ -136,6 +136,9 @@ def classroom_page(classname):
         return redirect(url_for('profile'))
 
     # Build detailed assignment list
+    
+    with open(os.path.join(os.path.dirname(__file__), "db", "assignments.json"), 'r') as f:
+        assignments = json.load(f)
     assignment_list = []
     for aid in classroom_info.get("assignments", []):
         if str(aid) in assignments:
