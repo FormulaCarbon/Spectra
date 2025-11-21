@@ -126,7 +126,23 @@ def logout():
 
 @app.route('/profile')
 def profile():
-    return render_template('profile.html', user=session.get('user',''))
+    username = session.get('user', '')
+    user_info = users.get(username, {})
+    user_classes = user_info.get("classrooms", [])
+
+    # Build list of classroom dicts for template
+    detailed_classes = []
+    for cname in user_classes:
+        classroom_info = classrooms.get(cname, {})
+        assignments = classroom_info.get("assignments", [])
+        detailed_classes.append({
+            "name": cname,        # key used in template as c.name
+            "assignments": assignments
+        })
+
+    return render_template('profile.html',
+                           user=username,
+                           classrooms=detailed_classes)
 
 
 @app.route('/classroom/<classname>')
