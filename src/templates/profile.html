@@ -1,14 +1,32 @@
-{% extends "layout.html" %}
-{% block title %}Index{% endblock %}
+{% extends "layout.html" %} 
 
-{% block head %}
-    {{ super() }}
-{% endblock %}
+{% block title %}Profile{% endblock %} 
 
-{% block navbar %}
-    {{ super() }}
+{% block head %} 
+    {{ super() }} 
+{% endblock %} 
+
+{% block navbar %} 
+    {{ super() }} 
 {% endblock %}
 
 {% block content %}
-    <h1>User profile</h1>
+<h2>Your Classrooms:</h2>
+
+{% if classrooms %}
+    <ul>
+    {% for c in classrooms %}
+        <li>{{ c }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>You are not in any classrooms.</p>
+{% endif %}
+<a href="{{ url_for('newclass') }}" class="btn btn-primary">
+    Create New Classroom
+</a>
+{% endblock %}
+
+{% block footer %} 
+    {{ super() }} 
 {% endblock %}

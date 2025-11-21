@@ -17,6 +17,10 @@ codemirror = CodeMirror(app)
 with open(os.path.join(os.path.dirname(__file__), ".\\db\\users.json"), 'r') as f:
     users = json.load(f)
     f.close()
+    
+with open(os.path.join(os.path.dirname(__file__), "db", "classrooms.json"), 'r') as f:
+    classrooms = json.load(f)
+    f.close()
 
 @app.route('/')
 def main():
@@ -73,7 +77,43 @@ def logout():
 
 @app.route('/profile')
 def profile():
-    return render_template('profile.html', user = session.get('user',''))
+    username = session.get('user', '')
+    user_info = users.get(username, {})
+    user_classes = user_info.get("classrooms", [])
+
+    return render_template('profile.html',
+                           user=username,
+                           classrooms=user_classes)
+
+@app.route('/newclass', methods = ['GET', 'POST'])
+@app.route('/newclass', methods=['GET', 'POST'])
+def newclass():
+    if request.method == "POST":
+        cname = request.form.get('classname')
+        students = request.form.get('students').split(', ')
+        teachers = request.form.get('teachers').split(', ')
+        admins = request.form.get('admins').split(', ')
+
+        classrooms[cname] = {
+            'students': students,
+            'teachers': teachers,
+            'admins': admins,
+            'assignments': []
+        }
+
+        # Update each user's classroom list
+        for uname in students + teachers + admins:
+            if uname in users:
+                users[uname].setdefault("classrooms", [])
+                users[uname]["classrooms"].append(cname)
+
+        # Save updated users.json and classrooms.json
+        with open(os.path.join(os.path.dirname(__file__), ".\\db\\users.json"), "w") as f:
+            json.dump(users, f, indent=4)
+        with open(os.path.join(os.path.dirname(__file__), ".\\db\\classrooms.json"), "w") as f:
+            json.dump(classrooms, f, indent=4)
+
+    return render_template('newclass.html', user=session.get('user',''))
 
 if __name__ == '__main__':
     app.run(debug=True)

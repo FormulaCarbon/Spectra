@@ -1,0 +1,14 @@
+{
+    "testclass1": {
+        "students": [
+            "test1"
+        ],
+        "teachers": [
+            "test1"
+        ],
+        "admins": [
+            "test1"
+        ],
+        "assignments": []
+    }
+}
