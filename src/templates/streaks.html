@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block title %}Daily Streaks{% endblock %}
+
+{% block content %}
+<h2>{{ user }}'s Daily Streaks</h2>
+
+{% if class_streaks %}
+    {% for cname, streaks in class_streaks.items() %}
+        <h3>{{ cname }}</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Streak (days)</th>
+                    <th>Avg Daily Minutes</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s in streaks %}
+                <tr {% if s.username == user %}class="table-success"{% endif %}>
+                    <td>{{ s.username }}</td>
+                    <td>{{ s.streak }}</td>
+                    <td>{{ s.avg_minutes | round(1) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endfor %}
+{% else %}
+    <p>No streak data available.</p>
+{% endif %}
+
+<a href="{{ url_for('profile') }}" class="btn btn-secondary mt-3">Back to Profile</a>
+{% endblock %}
