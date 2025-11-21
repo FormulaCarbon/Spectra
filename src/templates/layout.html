@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html data-bs-theme="dark">
     <head>
         {% block head %}
             <meta charset="utf-8">
@@ -34,29 +34,50 @@
             </style>
         {% endblock %}
     </head>
-    <body class="text-bg-dark">
+    <body>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
         {% block navbar %}
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <a class="navbar-brand" href="/">Spectra</a>
+            <nav class="navbar navbar-expand-lg">
+                <a class="navbar-brand ms-3" href="/">Spectra</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/editor"> Code Editor</a>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/">Home</a>
                         </li>
+                    </ul>
+                    <ul class="navbar-nav ms-auto me-3">
+                        {% if user == "" %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="/login">Login</a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="/profile">{{ user }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/logout">Logout</a>
+                            </li>
+                        {% endif %}
                     </ul>
                 </div>
             </nav>
         {% endblock %}
-        <div id="content" class = "fill">{% block content %}{% endblock %}</div>
-        <div id="footer">
+        <div id="content" class = "fill" style="background:#2c3035">{% block content %}{% endblock %}</div>
+        <div id="footer" >
             {% block footer %}
-                <footer class="bg-light text-dark">
+                <footer class="bg-dark">
                     <p>Made with love by the Spectra team.</p>
                 </footer>
             {% endblock %}

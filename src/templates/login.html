@@ -1,0 +1,43 @@
+{% extends "layout.html" %} 
+
+{% block title %}Login{% endblock %} 
+
+{% block head %} 
+    {{ super() }} 
+{% endblock %} 
+
+{% block navbar %} 
+    {{ super() }} 
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <form method="POST" action="/login">
+        <h1> Log In </h1>
+        <div class="mb-3">
+            <input
+                type="text"
+                class="form-control"
+                id="username"
+                placeholder="Username"
+                name="username"
+            />
+        </div>
+        <div class="mb-3">
+            <input
+                type="password"
+                class="form-control"
+                id="password"
+                placeholder="Password"
+                name="password"
+            />
+        </div>
+        <button type="submit" class="btn btn-primary">Log in</button>
+        <p>Don't have an account? <a href="/signup">Sign Up</a></p>
+    </form>
+</div>
+{% endblock %} 
+
+{% block footer %} 
+    {{ super() }} 
+{% endblock %}
