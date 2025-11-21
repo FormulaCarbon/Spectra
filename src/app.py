@@ -81,11 +81,20 @@ def profile():
     user_info = users.get(username, {})
     user_classes = user_info.get("classrooms", [])
 
+    # Build list of classroom dicts for template
+    detailed_classes = []
+    for cname in user_classes:
+        classroom_info = classrooms.get(cname, {})
+        assignments = classroom_info.get("assignments", [])
+        detailed_classes.append({
+            "name": cname,        # key used in template as c.name
+            "assignments": assignments
+        })
+
     return render_template('profile.html',
                            user=username,
-                           classrooms=user_classes)
+                           classrooms=detailed_classes)
 
-@app.route('/newclass', methods = ['GET', 'POST'])
 @app.route('/newclass', methods=['GET', 'POST'])
 def newclass():
     if request.method == "POST":
@@ -114,6 +123,19 @@ def newclass():
             json.dump(classrooms, f, indent=4)
 
     return render_template('newclass.html', user=session.get('user',''))
+
+@app.route('/classroom/<classname>')
+def classroom_page(classname):
+    classroom_info = classrooms.get(classname)
+    if not classroom_info:
+        flash("Classroom not found.", "danger")
+        return redirect(url_for('profile'))
+    
+    return render_template('classroom.html',
+                           classname=classname,
+                           classroom=classroom_info,
+                           user=session.get('user',''))
+
 
 if __name__ == '__main__':
     app.run(debug=True)

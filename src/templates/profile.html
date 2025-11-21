@@ -16,15 +16,28 @@
 {% if classrooms %}
     <ul>
     {% for c in classrooms %}
-        <li>{{ c }}</li>
+        <li>
+            <!-- clickable classroom link -->
+            <a href="{{ url_for('classroom_page', classname=c.name) }}">{{ c.name }}</a>
+
+            <!-- list assignments under this classroom -->
+            {% if c.assignments %}
+                <ul>
+                {% for a in c.assignments %}
+                    <li>{{ a }}</li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p>No assignments yet.</p>
+            {% endif %}
+        </li>
     {% endfor %}
     </ul>
 {% else %}
     <p>You are not in any classrooms.</p>
 {% endif %}
-<a href="{{ url_for('newclass') }}" class="btn btn-primary">
-    Create New Classroom
-</a>
+
+
 {% endblock %}
 
 {% block footer %} 
