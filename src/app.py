@@ -248,8 +248,51 @@ def streaks():
         # Sort: first by streak descending, then by avg_minutes descending
         streak_data.sort(key=lambda x: (-x['streak'], -x['avg_minutes']))
         class_streaks[cname] = streak_data
+        return render_template('streaks.html', user=username, class_streaks=class_streaks)
 
-    return render_template('streaks.html', user=username, class_streaks=class_streaks)
+@app.route('/newassignment/<classname>', methods=['GET', 'POST'])
+def newassignment(classname):
+    # Ensure classroom exists
+    if classname not in classrooms:
+        flash("Classroom not found.", "danger")
+        return redirect(url_for('profile'))
+
+    if request.method == "POST":
+        title = request.form.get("title")
+        problem = request.form.get("problem")
+        question = request.form.get("question", "")
+        atype = request.form.get("type")
+
+        # Generate next assignment ID
+        next_id = max([int(k) for k in assignments.keys()] + [0]) + 1
+
+        # Create assignment object
+        new_assignment = {
+            "id": next_id,
+            "title": title,
+            "type": atype,
+            "problem": problem,
+            "question": question,
+            "classroom": classname
+        }
+
+        assignments[str(next_id)] = new_assignment
+
+        # Save assignments.json
+        with open(os.path.join(os.path.dirname(__file__), "db", "assignments.json"), "w") as f:
+            json.dump(assignments, f, indent=4)
+
+        # Add assignment ID to classroom
+        classrooms[classname]["assignments"].append(next_id)
+
+        # Save classrooms.json
+        with open(os.path.join(os.path.dirname(__file__), "db", "classrooms.json"), "w") as f:
+            json.dump(classrooms, f, indent=4)
+
+        flash("Assignment created!", "success")
+        return redirect(url_for('classroom_page', classname=classname))
+
+    return render_template("newassignment.html", classname=classname, user=session.get('user', ''))
 
 
 if __name__ == '__main__':

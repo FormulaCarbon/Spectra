@@ -16,5 +16,21 @@
         "question": "",
         "answer": "",
         "classroom": "testclass1"
+    },
+    "3": {
+        "id": 3,
+        "title": "test math 1",
+        "type": "math",
+        "problem": "solve",
+        "question": "a + b",
+        "classroom": "testclass1"
+    },
+    "4": {
+        "id": 4,
+        "title": "test cs 1",
+        "type": "cs",
+        "problem": "print",
+        "question": "",
+        "classroom": "testclass1"
     }
 }

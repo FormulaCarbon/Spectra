@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+
+{% block title %}New Assignment{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <form method="POST" action="">
+        <h1> New Assignment </h1>
+
+        <div class="mb-3">
+            <input
+                type="text"
+                class="form-control"
+                name="title"
+                placeholder="Assignment Title"
+                required
+            />
+        </div>
+
+        <div class="mb-3">
+            <input
+                type="text"
+                class="form-control"
+                name="problem"
+                placeholder="Problem Description"
+                required
+            />
+        </div>
+
+        <div class="mb-3">
+            <input
+                type="text"
+                class="form-control"
+                name="question"
+                placeholder="LaTeX (Needed for Math only)"
+            />
+        </div>
+
+        <div class="mb-3">
+            <select class="form-control" name="type" required>
+                <option value="math">Math</option>
+                <option value="cs">Coding</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Create Assignment</button>
+        <p>
+            <a href="{{ url_for('classroom_page', classname=classname) }}">
+                Back to Classroom
+            </a>
+        </p>
+    </form>
+</div>
+{% endblock %}
