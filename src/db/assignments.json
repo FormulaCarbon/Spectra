@@ -1,0 +1,18 @@
+{
+    "1": {
+        "id": 1,
+        "title": "Quadratic Vertex Practice",
+        "type": "math",
+        "problem": "Convert the quadratic to vertex form:",
+        "question": "f(x) = x^2 + 6x + 5",
+        "classroom": "testclass1"
+    },
+    "2": {
+        "id": 2,
+        "title": "Python Loop Warmup",
+        "type": "cs",
+        "problem": "Write a Python loop that prints the numbers 1-10.",
+        "question": "",
+        "classroom": "testclass1"
+    }
+}

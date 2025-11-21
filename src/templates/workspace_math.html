@@ -1,0 +1,121 @@
+{% extends "layout.html" %}
+{% block title %}{{ assignment.title }}{% endblock %}
+
+{% block content %}
+
+<style>
+    /* Question box */
+    .question-box {
+        margin-bottom: 20px;
+        padding: 15px;
+        background: #2c2f33; /* Discord-like dark card */
+        border-left: 4px solid #3b82f6;
+        border-radius: 6px;
+        color: #e4e4e4;
+    }
+
+    /* General text color inside workspace */
+    h3, p, strong {
+        color: #f0f0f0 !important;
+    }
+
+    /* Math label */
+    .math-label {
+        font-weight: 600;
+        font-size: 1.2rem;
+        margin-bottom: 6px;
+        color: #e4e4e4;
+    }
+
+    /* MathQuill input box */
+    .mq-editable-field {
+        width: 100%;
+        min-height: 60px;
+        padding: 12px;
+        font-size: 24px;
+        border: 2px solid #50545c;
+        border-radius: 8px;
+        background: #1e1f22;   /* dark textbox background */
+        color: #ffffff;
+        cursor: text;
+    }
+
+    .mq-editable-field:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 6px rgba(59, 130, 246, 0.5);
+    }
+
+    /* Hidden outputs for MathQuill stability */
+    #latex-output, #latex-preview {
+        visibility: hidden;
+        height: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        overflow: hidden;
+    }
+</style>
+
+<nav class="navbar navbar-dark bg-dark px-3">
+    <a href="{{ url_for('classroom_page', classname=assignment.classroom) }}" class="navbar-brand">← Back</a>
+    <span class="text-white">Workspace</span>
+</nav>
+
+<div class="container mt-4">
+
+    <h3>{{ assignment.title }}</h3>
+    <hr style="border-color: #666;">
+
+    <!-- QUESTION BOX -->
+    <div class="question-box">
+        <p><strong>Problem:</strong> {{ assignment.problem }}</p>
+
+        {% if assignment.question %}
+        <p class="math">\( {{ assignment.question }} \)</p>
+        {% endif %}
+    </div>
+
+    <!-- INPUT FIELD -->
+    <label class="math-label">Math Answer</label>
+    <div id="math-field" class="mq-editable-field"></div>
+
+    <div id="latex-output"></div>
+    <div id="latex-preview"></div>
+
+    <button class="btn btn-primary mt-3">Submit</button>
+
+</div>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- MathQuill -->
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/mathquill/0.10.1/mathquill.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathquill/0.10.1/mathquill.js"></script>
+
+<!-- MathJax -->
+<script>
+    window.MathJax = {
+        tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+        svg: { fontCache: 'global' }
+    };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<!-- Initialize MathQuill -->
+<script>
+    var MQ = MathQuill.getInterface(2);
+    var field = MQ.MathField(document.getElementById("math-field"), {
+        handlers: {
+            edit: function() {
+                let latex = field.latex();
+                document.getElementById("latex-output").innerText = latex;
+                document.getElementById("latex-preview").innerHTML = "$" + latex + "$";
+                MathJax.typesetPromise();
+            }
+        }
+    });
+</script>
+
+{% endblock %}
