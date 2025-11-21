@@ -95,6 +95,24 @@
                 .spectra-navbar .navbar-toggler:focus {
                     box-shadow: none;
                 }
+
+                .spectra-footer {
+                    background: #111827;
+                    border-top: 1px solid rgba(148, 163, 184, 0.2);
+                    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.3);
+                    color: #e5e7eb;
+                }
+
+                .spectra-footer .footer-link {
+                    color: #9ca3af;
+                    text-decoration: none;
+                    transition: color 0.15s ease, opacity 0.15s ease;
+                }
+
+                .spectra-footer .footer-link:hover {
+                    color: #ffffff;
+                    opacity: 0.85;
+                }
             </style>
         {% endblock %}
     </head>
@@ -163,9 +181,19 @@
         <div id="content" class = "fill" style="background:#2c3035">{% block content %}{% endblock %}</div>
         <div id="footer" >
             {% block footer %}
-                <footer class="bg-dark">
-                    <p>Made with love by the Spectra team.</p>
-                </footer>
+            <footer class="spectra-footer mt-auto">
+                <div class="container-fluid d-flex flex-column flex-md-row justify-content-between align-items-center py-3">
+                    <div class="text-muted small">
+                        Spectra — Socratic STEM Learning
+                    </div>
+
+                    <div class="d-flex gap-3 small">
+                        <a href="/" class="footer-link">Home</a>
+                        <a href="/login" class="footer-link">Login</a>
+                        <a href="/signup" class="footer-link">Sign Up</a>
+                    </div>
+                </div>
+            </footer>
             {% endblock %}
         </div>
     </body>
