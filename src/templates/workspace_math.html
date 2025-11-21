@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block title %}{{ assignment.title }}{% endblock %}
+
+{% block content %}
+
+<h2>{{ assignment.title }}</h2>
+
+<div class="question-box">
+    <p><strong>Problem:</strong></p>
+    <p class="math">\( {{ assignment.problem }} \)</p>
+</div>
+
+<label class="math-label">Math Answer</label>
+<div id="math-field" class="mq-editable-field"></div>
+
+<!-- Hidden outputs for MathQuill stability -->
+<div id="latex-output"></div>
+<div id="latex-preview"></div>
+
+<script>
+    var MQ = MathQuill.getInterface(2);
+    var field = MQ.MathField(document.getElementById("math-field"), {
+        handlers: {
+            edit: function() {
+                document.getElementById("latex-output").innerText = field.latex();
+                document.getElementById("latex-preview").innerHTML = "$" + field.latex() + "$";
+                MathJax.typesetPromise();
+            }
+        }
+    });
+</script>
+
+{% endblock %}

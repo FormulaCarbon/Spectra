@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block title %}{{ assignment.title }}{% endblock %}
+
+{% block content %}
+
+<h2>{{ assignment.title }}</h2>
+
+<div class="question-box">
+    <p><strong>Problem:</strong></p>
+    <p>{{ assignment.problem }}</p>
+</div>
+
+<textarea id="editor-box"># Write Python code here</textarea>
+
+<script>
+    CodeMirror.fromTextArea(
+        document.getElementById("editor-box"),
+        {
+            lineNumbers: true,
+            mode: "python",
+            theme: "material",
+            indentUnit: 4,
+            tabSize: 4
+        }
+    );
+</script>
+
+{% endblock %}

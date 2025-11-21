@@ -2,44 +2,23 @@
 
 {% block title %}{{ classname }}{% endblock %}
 
-{% block head %}
-    {{ super() }}
-{% endblock %}
-
-{% block navbar %}
-    {{ super() }}
-{% endblock %}
-
 {% block content %}
 <h2>Classroom: {{ classname }}</h2>
 
-<h3>Students:</h3>
-{% if classroom.students %}
-    <ul>
-    {% for student in classroom.students %}
-        <li>{{ student }}</li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No students enrolled yet.</p>
-{% endif %}
-
-<h3>Teachers:</h3>
-{% if classroom.teachers %}
-    <ul>
-    {% for teacher in classroom.teachers %}
-        <li>{{ teacher }}</li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No teachers assigned yet.</p>
-{% endif %}
-
 <h3>Assignments:</h3>
-{% if classroom.assignments %}
+{% if assignments %}
     <ul>
-    {% for a in classroom.assignments %}
-        <li>{{ a }}</li>
+    {% for a in assignments %}
+        <li>
+            <a href="{{ url_for('assignment_page', aid=a.id) }}">
+                {{ a.title }}
+            </a>
+            {% if a.type == 'math' %}
+                <span class="badge bg-primary">Math</span>
+            {% else %}
+                <span class="badge bg-info">Coding</span>
+            {% endif %}
+        </li>
     {% endfor %}
     </ul>
 {% else %}
@@ -47,8 +26,4 @@
 {% endif %}
 
 <a href="{{ url_for('profile') }}" class="btn btn-secondary mt-3">Back to Profile</a>
-{% endblock %}
-
-{% block footer %}
-    {{ super() }}
 {% endblock %}
