@@ -3,8 +3,9 @@
         "id": 1,
         "title": "Quadratic Vertex Practice",
         "type": "math",
-        "problem": "Convert the quadratic to vertex form:",
+        "problem": "Convert the quadratic to vertex form.",
         "question": "f(x) = x^2 + 6x + 5",
+        "answer": "(x+3)^2 - 4",
         "classroom": "testclass1"
     },
     "2": {
@@ -13,6 +14,7 @@
         "type": "cs",
         "problem": "Write a Python loop that prints the numbers 1-10.",
         "question": "",
+        "answer": "",
         "classroom": "testclass1"
     },
     "3": {

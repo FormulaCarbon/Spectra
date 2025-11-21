@@ -1,19 +1,17 @@
 {
     "testclass1": {
         "students": [
-            "test1"
+            "test1",
+            "test2"
         ],
         "teachers": [
-            "test1"
+            "test1",
+            "test2"
         ],
         "admins": [
-            "test1"
+            "test1",
+            "test2"
         ],
-        "assignments": [
-            1,
-            2,
-            3,
-            4
-        ]
+        "assignments": [1, 2]
     }
 }
