@@ -1,8 +1,78 @@
 {% extends "layout.html" %}
-{% block title %}Index{% endblock %}
+{% block title %}Home{% endblock %}
 
 {% block head %}
     {{ super() }}
+    <style>
+        .hero-heading {
+            font-size: 3rem;
+            font-weight: 700;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            max-width: 40rem;
+        }
+
+        .feature-card {
+            background-color: #343a40;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            height: 100%;
+        }
+
+        .feature-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .tag-pill {
+            display: inline-block;
+            border-radius: 999px;
+            padding: 0.15rem 0.75rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .step-badge {
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 0.25rem 0.75rem;
+            font-size: 0.8rem;
+            margin-right: 0.4rem;
+            margin-bottom: 0.4rem;
+            display: inline-block;
+        }
+
+        .mock-chat {
+            background-color: #1f2227;
+            border-radius: 0.75rem;
+            padding: 1rem 1.25rem;
+            font-size: 0.9rem;
+            max-height: 260px;
+            overflow: hidden;
+        }
+
+        .chat-line {
+            margin-bottom: 0.6rem;
+        }
+
+        .chat-role-student {
+            color: #e9ecef;
+        }
+
+        .chat-role-ai {
+            color: #81d4fa;
+        }
+
+        .chat-label {
+            font-weight: 600;
+            margin-right: 0.3rem;
+        }
+    </style>
 {% endblock %}
 
 {% block navbar %}
@@ -10,5 +80,162 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Spectra - Socratic Tutor</h1>
+<div class="container py-5 text-light">
+    <div class="row align-items-center mb-5">
+        <div class="col-md-7 mb-4 mb-md-0">
+            <span class="tag-pill mb-3 d-inline-block">
+                Socratic AI • STEM Classrooms
+            </span>
+            <h1 class="hero-heading mb-3">
+                AI that asks questions,<br>not just gives answers.
+            </h1>
+            <p class="hero-subtitle mb-4 text-secondary">
+                Spectra is a Socratic STEM classroom platform. Students work in a math/code
+                workspace with an AI tutor that guides with questions, while teachers see every step,
+                hint, and misconception in one dashboard.
+            </p>
+
+            {% if user == "" %}
+                <div class="d-flex flex-wrap align-items-center gap-2">
+                    <a href="/signup" class="btn btn-primary btn-lg">
+                        Get Started as Teacher
+                    </a>
+                    <a href="/login" class="btn btn-outline-light btn-lg">
+                        Log In
+                    </a>
+                </div>
+            {% else %}
+                <div class="d-flex flex-wrap align-items-center gap-2">
+                    <a href="/profile" class="btn btn-primary btn-lg">
+                        Go to Dashboard
+                    </a>
+                    <a href="/editor" class="btn btn-outline-light btn-lg">
+                        Open Student Workspace
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="col-md-5">
+            <div class="feature-card">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted" style="font-size:0.85rem;">Student Workspace</span>
+                    <div>
+                        <span class="step-badge">Understand</span>
+                        <span class="step-badge">Plan</span>
+                        <span class="step-badge">Execute</span>
+                        <span class="step-badge">Check</span>
+                    </div>
+                </div>
+                <div class="row g-3">
+                    <div class="col-6">
+                        <div class="mb-1 text-muted" style="font-size:0.8rem;">
+                            LaTeX / Code Area
+                        </div>
+                        <div style="background-color:#1f2227; border-radius:0.5rem; padding:0.6rem; font-size:0.8rem; min-height:140px;">
+                            <span class="text-secondary">Student is working on:</span><br>
+                            <code>
+                                ∫ (2x / (x² + 1)) dx<br><br>
+                                // Plan<br>
+                                Let u = x² + 1<br>
+                                du = 2x dx
+                            </code>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="mb-1 text-muted" style="font-size:0.8rem;">
+                            Socratic Tutor
+                        </div>
+                        <div class="mock-chat" style="min-height:330px;">
+                            <div class="chat-line chat-role-student">
+                                <span class="chat-label">Student</span>
+                                I’m not sure how to start this integral.
+                            </div>
+                            <div class="chat-line chat-role-ai">
+                                <span class="chat-label">Spectra</span>
+                                What substitution could simplify the expression in the denominator?
+                            </div>
+                            <div class="chat-line chat-role-student">
+                                <span class="chat-label">Student</span>
+                                Maybe let u = x² + 1?
+                            </div>
+                            <div class="chat-line chat-role-ai">
+                                <span class="chat-label">Spectra</span>
+                                Good idea. If u = x² + 1, what does du equal, and how does the integral change?
+                            </div>
+                            <div class="text-muted" style="font-size:0.7rem; margin-top:0.4rem;">
+                                *Full transcript visible to the teacher.*
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-12 mb-3">
+            <h2 class="h4">Built for the AI-era STEM classroom</h2>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="feature-card">
+                <div class="feature-title">Socratic AI Tutor</div>
+                <p class="text-secondary mb-2">
+                    Guides with questions and hints instead of dropping full solutions.
+                </p>
+                <ul class="text-secondary mb-0" style="font-size:0.85rem;">
+                    <li>Full Socratic or hints-only modes</li>
+                    <li>Exam mode with no hints</li>
+                    <li>Flags copy-paste shortcuts</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="feature-card">
+                <div class="feature-title">Teacher Dashboard</div>
+                <p class="text-secondary mb-2">
+                    See how students think, not just what answer they submit.
+                </p>
+                <ul class="text-secondary mb-0" style="font-size:0.85rem;">
+                    <li>Time on task & hint usage</li>
+                    <li>Step completion tracking</li>
+                    <li>Full AI/student transcripts</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="feature-card">
+                <div class="feature-title">STEM Workspace</div>
+                <p class="text-secondary mb-2">
+                    A focused space for math and code.
+                </p>
+                <ul class="text-secondary mb-0" style="font-size:0.85rem;">
+                    <li>LaTeX-friendly math input</li>
+                    <li>Simple in-browser code editor</li>
+                    <li>Designed for math, CS, and physics</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="feature-card">
+                <div class="feature-title">Classroom Management</div>
+                <p class="text-secondary mb-2">
+                    Lightweight accounts and assignments tailored for everyone.
+                </p>
+                <ul class="text-secondary mb-0" style="font-size:0.85rem;">
+                    <li>Admin / teacher / student roles</li>
+                    <li>Simple assignment setup</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+    {{ super() }}
 {% endblock %}
