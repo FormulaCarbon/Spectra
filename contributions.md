@@ -5,9 +5,14 @@ So far, I added:
 - add bug report and feature request templates
 - added user_types and classroom creation
 - added answer checking and socractic bot
-
+- Made the original home page
+  
 Ansh Kapadia:
-
+- So far, IL
+- Worked on assignments page 
+- Created demo assignments
+- Made the original user profile page
+- Worked on Wiki
 
 Siddharth Kakumanu:
 - So far, I:
@@ -17,11 +22,18 @@ Siddharth Kakumanu:
 - Added Login, Signup, and ability to add assignments
 - Did Small Fixes
 
-
 Aanya Kotla:
-
+- So far, I:
+- Added the daily streak feature 
+- Added navigating through classrooms feature
+- Added the about page
+- Started work on the wiki
 
 Sriprajnav Koduri:
+- So far, I:
+- Styled and updated all the pages to look better
+- Setup pytest
+- Revamped the UI to be more modern
 
 
 Outlook and future work:
