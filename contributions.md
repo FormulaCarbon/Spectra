@@ -8,7 +8,7 @@ So far, I added:
 - Made the original home page
   
 Ansh Kapadia:
-- So far, IL
+- So far, I:
 - Worked on assignments page 
 - Created demo assignments
 - Made the original user profile page
